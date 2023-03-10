@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.openide.util.Exceptions;
+import proyecto.classes.LogicaMenu;
 import proyecto.classes.Plat;
-import proyecto.classes.VariablesJFrame;
 import proyecto.classes.tipo;
 
 /*
@@ -32,7 +33,13 @@ import proyecto.classes.tipo;
 public class JFraMenuPrincipal extends javax.swing.JFrame {
 
     public final ArrayList<Plat> menu;
-    
+    String nomRestaurant;
+    String idiomaRestaurant;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+    Date horaCierreRestaurant=Date.from(Instant.now());
+    int validacionLicencia = 0;
+    int validacionCamarero = 0;
+    int validacionMenu = 0;
 
     String txtFile = System.getProperty("user.dir") + "/src/Archivos necesarios/llicenciesValides.csv";
 
@@ -41,38 +48,42 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
      *
      */
     public JFraMenuPrincipal() {
-        this.menu = new ArrayList<>();
-        VariablesJFrame.nomRestaurant = "Restaurante";
-        VariablesJFrame.idiomaRestaurant = "Castellano";
-        try {
-            if (VariablesJFrame.hecho==0) {
-                VariablesJFrame.horaCierreRestaurant = VariablesJFrame.formatter.parse("12/12/2023, 12:00");
-                VariablesJFrame.hecho=1;
-                System.out.println("hola");
-            }
-
-        } catch (ParseException ex) {
-            Exceptions.printStackTrace(ex);
-        }
+        this.menu = LogicaMenu.getMenu();
+        nomRestaurant = "Restaurante";
+        idiomaRestaurant = "Castellano";
         initComponents();
     }
-
-    public void setValidacionCamarero(int validacion) {
-        VariablesJFrame.validacionCamarero = validacion;
+    
+    public void setValidacionCamarero(int validacion){
+        validacionCamarero = validacion;
         jLabelCamarero.setVisible(false);
     }
 
-    public void validaciones() {
-        if (VariablesJFrame.validacionLicencia > 0 && VariablesJFrame.validacionMenu > 0 && VariablesJFrame.validacionCamarero > 0) {
+    public String getNomRestaurant() {
+        return nomRestaurant;
+    }
+
+    public String getIdiomaRestaurant() {
+        return idiomaRestaurant;
+    }
+
+    public Date getHoraCierreRestaurant() {
+        return horaCierreRestaurant;
+    }
+
+    public void setConfigRestaurante(String nom, String idioma, Date horaCierre) throws ParseException {
+        nomRestaurant = nom;
+        idiomaRestaurant = idioma;
+        horaCierreRestaurant = new Date(horaCierre.getTime());
+    }
+    
+    public void validaciones(){
+        if (validacionLicencia > 0 && validacionMenu > 0 && validacionCamarero > 0){
             jBuCargarRestaurante.setEnabled(true);
             jLabelInsertar.setVisible(false);
-
-        } else {
-            jBuCargarRestaurante.setEnabled(false);
-            jLabelInsertar.setVisible(true);
-
         }
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -204,7 +215,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                     + chooser.getSelectedFile().getName());
             file = chooser.getSelectedFile();
         }
-        if (file != null && ("llicencia1.csv".equals(file.getName()) || "llicencia2.csv".equals(file.getName()) || "llicencia3.csv".equals(file.getName()))) {
+        if (file != null) {
             try (BufferedReader bufr = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
                 String linia = bufr.readLine();
                 partes = linia.split(",");
@@ -229,14 +240,11 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                 bufr2.close();
                 if (resultado) {
                     JOptionPane.showMessageDialog(this, "Licencia validada", "Validacion licencia", JOptionPane.INFORMATION_MESSAGE);
-                    VariablesJFrame.validacionLicencia = 1;
+                    validacionLicencia = 1;
                     validaciones();
                     jLabelLicencia.setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(this, "Licencia invalida", "Validacion licencia", JOptionPane.ERROR_MESSAGE);
-                    VariablesJFrame.validacionLicencia = 0;
-                    validaciones();
-                    jLabelLicencia.setVisible(true);
                 }
             } catch (IOException | ParseException ex) {
                 Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -268,150 +276,144 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                     + chooser.getSelectedFile().getName());
             file = chooser.getSelectedFile();
         }
-        if (file != null && ("menu20230220.csv".equals(file.getName()) || "menu20230221.csv".equals(file.getName()))) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-                Plat p;
-                while ((linea = br.readLine()) != null) {
-                    partes = linea.split(",", 6);
-                    //if (partes[4]){System.out.println("si");}
-                    if (partes[2].contains("primer")) {
-                        p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.primer);
-                        if (partes[3].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[3].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[3].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[3].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[3].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        if (partes[4].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[4].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[4].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[4].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[4].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        if (partes[5].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[5].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[5].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[5].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[5].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        menu.add(p);
-                        VariablesJFrame.validacionMenu = 1;
-                        validaciones();
-                        jLabelMenu.setVisible(false);
-                    } else if (partes[2].contains("segon")) {
-                        p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.segon);
-                        if (partes[3].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[3].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[3].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[3].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[3].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        if (partes[4].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[4].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[4].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[4].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[4].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        if (partes[5].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[5].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[5].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[5].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[5].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        menu.add(p);
-                        VariablesJFrame.validacionMenu = 1;
-                        validaciones();
-                        jLabelMenu.setVisible(false);
-
-                    } else if (partes[2].contains("postre")) {
-                        p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.postre);
-                        if (partes[3].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[3].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[3].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[3].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[3].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        if (partes[4].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[4].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[4].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[4].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[4].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        if (partes[5].contains("lactics")) {
-                            p.setLàctics(true);
-                        } else if (partes[5].contains("carn")) {
-                            p.setCarn(true);
-                        } else if (partes[5].contains("ou")) {
-                            p.setOu(true);
-                        } else if (partes[5].contains("peix")) {
-                            p.setPeix(true);
-                        } else if (partes[5].contains("gluten")) {
-                            p.setGluten(true);
-                        }
-
-                        menu.add(p);
-                        VariablesJFrame.validacionMenu = 1;
-                        validaciones();
-                        jLabelMenu.setVisible(false);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+            Plat p;
+            while ((linea = br.readLine()) != null) {
+                partes = linea.split(",", 6);
+                //if (partes[4]){System.out.println("si");}
+                if (partes[2].contains("primer")) {
+                    p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.primer);
+                    if (partes[3].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[3].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[3].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[3].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[3].contains("gluten")) {
+                        p.setGluten(true);
                     }
 
+                    if (partes[4].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[4].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[4].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[4].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[4].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    if (partes[5].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[5].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[5].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[5].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[5].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    menu.add(p);
+                    validacionMenu = 1;
+                    validaciones();
+                    jLabelMenu.setVisible(false);
+                } else if (partes[2].contains("segon")) {
+                    p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.segon);
+                    if (partes[3].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[3].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[3].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[3].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[3].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    if (partes[4].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[4].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[4].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[4].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[4].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    if (partes[5].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[5].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[5].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[5].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[5].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    menu.add(p);
+                    validacionMenu = 1;
+                    validaciones();
+                    jLabelMenu.setVisible(false);
+
+                } else if (partes[2].contains("postre")) {
+                    p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.postre);
+                    if (partes[3].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[3].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[3].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[3].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[3].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    if (partes[4].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[4].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[4].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[4].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[4].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    if (partes[5].contains("lactics")) {
+                        p.setLàctics(true);
+                    } else if (partes[5].contains("carn")) {
+                        p.setCarn(true);
+                    } else if (partes[5].contains("ou")) {
+                        p.setOu(true);
+                    } else if (partes[5].contains("peix")) {
+                        p.setPeix(true);
+                    } else if (partes[5].contains("gluten")) {
+                        p.setGluten(true);
+                    }
+
+                    menu.add(p);
+                    validacionMenu = 1;
+                    validaciones();
+                    jLabelMenu.setVisible(false);
                 }
-                br.close();
-            } catch (IOException ex) {
-                Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+
             }
-        } else {
-            VariablesJFrame.validacionMenu = 0;
-            validaciones();
-            jLabelMenu.setVisible(true);
+            br.close();
+        } catch (IOException ex) {
+            Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMeMenuDiaActionPerformed
 
@@ -422,14 +424,9 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMeConfigGeneralActionPerformed
 
     private void jBuCargarRestauranteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuCargarRestauranteActionPerformed
-        // TODO add your handling code here:
-        System.out.println(VariablesJFrame.horaCierreRestaurant);
         Sala sala = new Sala(this, false);
-        JDiaCocina cocina = new JDiaCocina(this, false);
         this.setVisible(false);
-        cocina.setVisible(true);
         sala.setVisible(true);
-
     }//GEN-LAST:event_jBuCargarRestauranteActionPerformed
 
     /**

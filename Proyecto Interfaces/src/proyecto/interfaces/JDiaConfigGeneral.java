@@ -1,10 +1,10 @@
 package proyecto.interfaces;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.openide.util.Exceptions;
-import proyecto.classes.VariablesJFrame;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -20,7 +20,6 @@ public class JDiaConfigGeneral extends javax.swing.JDialog {
 
     /**
      * Creates new form JDiaConfigGeneral
-     *
      * @param parent
      * @param modal
      */
@@ -143,7 +142,8 @@ public class JDiaConfigGeneral extends javax.swing.JDialog {
             String nom = jTeFiNom.getText();
             String idioma = (String) jCoBoxIdioma.getSelectedItem();
             Date horaCierre = formatter2.parse(formatter2.format(jSpiHoraCierre.getValue()));
-            VariablesJFrame.setConfigRestaurante(nom, idioma, horaCierre);
+            System.out.println(horaCierre);
+            JFraMenuPrincipal.setConfigRestaurante(nom, idioma, horaCierre);
             this.setVisible(false);
         } catch (ParseException ex) {
             Exceptions.printStackTrace(ex);

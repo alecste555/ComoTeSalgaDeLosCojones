@@ -1,5 +1,8 @@
 package proyecto.classes;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -9,6 +12,7 @@ package proyecto.classes;
  * @author KAOS
  */
 public class Plat {
+
     final private String nom;
     final private Double preu;
     final private tipo tipo;
@@ -76,5 +80,19 @@ public class Plat {
     public void setOu(boolean ou) {
         this.ou = ou;
     }
-    
+
+    public String[] exportDataArray() {
+        String[] varStr = new String[9];
+        varStr[0] = this.tipo.name();
+        varStr[1] = this.nom;
+        varStr[2] = this.carn ? "✓" : "";
+        varStr[3] = this.peix ? "✓" : "";
+        varStr[4] = this.làctics ? "✓" : "";
+        varStr[5] = this.gluten ? "✓" : "";
+        varStr[6] = this.ou ? "✓" : "";
+        varStr[7] = Double.toString(this.preu);
+        varStr[8] = "0";
+        return varStr;
+
+    }
 }

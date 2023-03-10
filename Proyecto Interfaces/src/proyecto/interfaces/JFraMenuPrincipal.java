@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.openide.util.Exceptions;
+import proyecto.classes.LogicaMenu;
 import proyecto.classes.Plat;
 import proyecto.classes.VariablesJFrame;
 import proyecto.classes.tipo;
@@ -41,7 +43,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
      *
      */
     public JFraMenuPrincipal() {
-        this.menu = new ArrayList<>();
+        this.menu = LogicaMenu.getMenu();
         VariablesJFrame.nomRestaurant = "Restaurante";
         VariablesJFrame.idiomaRestaurant = "Castellano";
         try {
@@ -55,11 +57,18 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
             Exceptions.printStackTrace(ex);
         }
         initComponents();
+        jLabelLicencia1.setVisible(false);
+        jLabelCamarero1.setVisible(false);
+        jLabelInsertar1.setVisible(false);
+        jLabelMenu1.setVisible(false);
     }
 
     public void setValidacionCamarero(int validacion) {
         VariablesJFrame.validacionCamarero = validacion;
         jLabelCamarero.setVisible(false);
+        jLabelCamarero1.setText("Camarero: "+VariablesJFrame.camarero);
+        jLabelCamarero1.setVisible(true);
+        
     }
 
     public void validaciones() {
@@ -69,10 +78,14 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
 
         } else {
             jBuCargarRestaurante.setEnabled(false);
+            jLabelInsertar1.setVisible(false);
             jLabelInsertar.setVisible(true);
 
+        }if (VariablesJFrame.validacionLicencia > 0 || VariablesJFrame.validacionMenu > 0 || VariablesJFrame.validacionCamarero > 0) {
+            jLabelInsertar1.setVisible(false);
         }
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,6 +102,10 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
         jLabelLicencia = new javax.swing.JLabel();
         jLabelCamarero = new javax.swing.JLabel();
         jLabelMenu = new javax.swing.JLabel();
+        jLabelInsertar1 = new javax.swing.JLabel();
+        jLabelLicencia1 = new javax.swing.JLabel();
+        jLabelCamarero1 = new javax.swing.JLabel();
+        jLabelMenu1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMeCargar = new javax.swing.JMenu();
         jMenuCargarLicencia = new javax.swing.JMenuItem();
@@ -101,6 +118,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jBuCargarRestaurante.setText("Cargar restaurante");
+        jBuCargarRestaurante.setEnabled(false);
         jBuCargarRestaurante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBuCargarRestauranteActionPerformed(evt);
@@ -114,6 +132,14 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
         jLabelCamarero.setText("- Datos del camarero");
 
         jLabelMenu.setText("- Menu del dia");
+
+        jLabelInsertar1.setText("Validados:");
+
+        jLabelLicencia1.setText("- Licencia valida");
+
+        jLabelCamarero1.setText("- Datos del camarero");
+
+        jLabelMenu1.setText("- Menu del dia");
 
         jMeCargar.setText("Cargar");
         jMeCargar.addActionListener(new java.awt.event.ActionListener() {
@@ -163,27 +189,47 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jBuCargarRestaurante)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabelLicencia)
-                        .addComponent(jLabelInsertar)
-                        .addComponent(jLabelCamarero)
-                        .addComponent(jLabelMenu)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jBuCargarRestaurante)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelLicencia)
+                            .addComponent(jLabelInsertar)
+                            .addComponent(jLabelCamarero)
+                            .addComponent(jLabelMenu))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelLicencia1)
+                            .addComponent(jLabelInsertar1)
+                            .addComponent(jLabelCamarero1)
+                            .addComponent(jLabelMenu1))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelInsertar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelLicencia)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelCamarero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelMenu)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelInsertar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelLicencia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelCamarero)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelMenu))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelInsertar1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelLicencia1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelCamarero1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelMenu1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jBuCargarRestaurante)
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -232,11 +278,14 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                     VariablesJFrame.validacionLicencia = 1;
                     validaciones();
                     jLabelLicencia.setVisible(false);
+                    jLabelLicencia1.setText("Licencia: "+file.getName());
+                    jLabelLicencia1.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Licencia invalida", "Validacion licencia", JOptionPane.ERROR_MESSAGE);
                     VariablesJFrame.validacionLicencia = 0;
                     validaciones();
                     jLabelLicencia.setVisible(true);
+                    jLabelLicencia1.setVisible(false);
                 }
             } catch (IOException | ParseException ex) {
                 Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -312,10 +361,12 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                             p.setGluten(true);
                         }
 
-                        menu.add(p);
+                    menu.add(p);
                         VariablesJFrame.validacionMenu = 1;
                         validaciones();
                         jLabelMenu.setVisible(false);
+                        jLabelMenu1.setText("Menu: "+file.getName());
+                    jLabelMenu1.setVisible(true);
                     } else if (partes[2].contains("segon")) {
                         p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.segon);
                         if (partes[3].contains("lactics")) {
@@ -358,7 +409,8 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                         VariablesJFrame.validacionMenu = 1;
                         validaciones();
                         jLabelMenu.setVisible(false);
-
+jLabelMenu1.setText("Menu: "+file.getName());
+                    jLabelMenu1.setVisible(true);
                     } else if (partes[2].contains("postre")) {
                         p = new Plat(partes[0], Double.valueOf(partes[1]), tipo.postre);
                         if (partes[3].contains("lactics")) {
@@ -401,6 +453,8 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                         VariablesJFrame.validacionMenu = 1;
                         validaciones();
                         jLabelMenu.setVisible(false);
+                        jLabelMenu1.setText("Menu: "+file.getName());
+                    jLabelMenu1.setVisible(true);
                     }
 
                 }
@@ -412,6 +466,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
             VariablesJFrame.validacionMenu = 0;
             validaciones();
             jLabelMenu.setVisible(true);
+            jLabelMenu1.setVisible(false);
         }
     }//GEN-LAST:event_jMeMenuDiaActionPerformed
 
@@ -423,7 +478,6 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
 
     private void jBuCargarRestauranteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuCargarRestauranteActionPerformed
         // TODO add your handling code here:
-        System.out.println(VariablesJFrame.horaCierreRestaurant);
         Sala sala = new Sala(this, false);
         JDiaCocina cocina = new JDiaCocina(this, false);
         this.setVisible(false);
@@ -468,9 +522,13 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBuCargarRestaurante;
     private javax.swing.JLabel jLabelCamarero;
+    private javax.swing.JLabel jLabelCamarero1;
     private javax.swing.JLabel jLabelInsertar;
+    private javax.swing.JLabel jLabelInsertar1;
     private javax.swing.JLabel jLabelLicencia;
+    private javax.swing.JLabel jLabelLicencia1;
     private javax.swing.JLabel jLabelMenu;
+    private javax.swing.JLabel jLabelMenu1;
     private javax.swing.JMenu jMeCargar;
     private javax.swing.JMenuItem jMeConfigGeneral;
     private javax.swing.JMenuItem jMeDatosCamarero;

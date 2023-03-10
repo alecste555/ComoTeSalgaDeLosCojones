@@ -17,6 +17,7 @@ public class VariablesJFrame {
     public static String idiomaRestaurant;
     public static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
     public static Date horaCierreRestaurant;
+    public static String camarero;
     public static int validacionLicencia = 0;
     public static int validacionCamarero = 0;
     public static int validacionMenu = 0;

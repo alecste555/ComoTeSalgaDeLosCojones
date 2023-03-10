@@ -4,51 +4,48 @@
  */
 package proyecto.interfaces;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import proyecto.classes.Comanda;
 import proyecto.classes.ComandaTableModel;
 import proyecto.classes.LogicaComandes;
+import proyecto.classes.VariablesJFrame;
 
 /**
  *
  * @author Icheclin
  */
-public class Taula extends javax.swing.JDialog {
-
-    private final int mesa;
+public final class Taula extends javax.swing.JDialog {
+private final int mesa;
     private final java.awt.Frame parent;
-
     /**
      * Creates new form Taula
-     *
      * @param parent
      * @param modal
      * @param mesa
      */
-    public Taula(java.awt.Frame parent, boolean modal, int mesa) {
+    public Taula(java.awt.Frame parent, boolean modal,int mesa) {
         super(parent, modal);
         this.parent = parent;
-        this.mesa = mesa;
-        this.setTitle("Taula " + mesa);
+        this.mesa=mesa;
+        this.setTitle("Taula "+mesa);
         initComponents();
         updateTable();
     }
-
-    private void updateTable() {
-        ArrayList<String[]> comandeslineas = new ArrayList<>();
-        DefaultTableModel comandatable = new DefaultTableModel();
+public void updateTable() {
+        ArrayList<String[]> comandeslineas =new ArrayList<>();
         for (Comanda obj_it : LogicaComandes.getLlistaComandes()) {
-            if (obj_it.exportDataArray().containsKey(mesa)) {
-                for (int i = 0; i < obj_it.exportDataArray().get(mesa).size(); i++) {
-                    comandatable.addRow(obj_it.exportDataArray().get(mesa).get(i));
-                    comandeslineas.add(obj_it.exportDataArray().get(mesa).get(i));
-                }
+            if (obj_it.exportDataArray().containsKey(mesa)&&!obj_it.isPagada()){
+            for(int i = 0;i<obj_it.exportDataArray().get(mesa).size();i++){
+            comandeslineas.add(obj_it.exportDataArray().get(mesa).get(i));
+            }
             }
         }
         jTable2.setModel(new ComandaTableModel(comandeslineas));
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,8 +57,10 @@ public class Taula extends javax.swing.JDialog {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jMenuBar2 = new javax.swing.JMenuBar();
-        UpdateButton = new javax.swing.JMenu();
+        novaComanda = new javax.swing.JButton();
+        jToolBar1 = new javax.swing.JToolBar();
+        updateButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,39 +77,81 @@ public class Taula extends javax.swing.JDialog {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        UpdateButton.setText("Refresh");
-        UpdateButton.addActionListener(new java.awt.event.ActionListener() {
+        novaComanda.setText("Nova Comanda");
+        novaComanda.setToolTipText("");
+        novaComanda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UpdateButtonActionPerformed(evt);
+                novaComandaActionPerformed(evt);
             }
         });
-        jMenuBar2.add(UpdateButton);
 
-        setJMenuBar(jMenuBar2);
+        jToolBar1.setRollover(true);
+
+        updateButton.setText("Actualizar");
+        updateButton.setFocusable(false);
+        updateButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        updateButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(updateButton);
+
+        jButton1.setText("Facturar Comanda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                .addGap(13, 13, 13))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                        .addGap(13, 13, 13))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(novaComanda, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(novaComanda)
+                    .addComponent(jButton1))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
-        // TODO add your handling code here:
+    private void novaComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novaComandaActionPerformed
+        if(VariablesJFrame.horaCierreRestaurant.before(Date.from(Instant.now()))){
+        Carta cartadialeg = new Carta(this.parent, true, mesa,this);
+        cartadialeg.setVisible(true);}
+    }//GEN-LAST:event_novaComandaActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         updateTable();
-    }//GEN-LAST:event_UpdateButtonActionPerformed
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+Facturar facturadialeg = new Facturar(parent,true,mesa,this);
+        facturadialeg.setVisible(true);        
+    }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -140,7 +181,7 @@ public class Taula extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(() -> {
-            Taula dialog = new Taula(new javax.swing.JFrame(), true, 0);
+            Taula dialog = new Taula(new javax.swing.JFrame(), true,0);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -152,9 +193,11 @@ public class Taula extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu UpdateButton;
-    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton novaComanda;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

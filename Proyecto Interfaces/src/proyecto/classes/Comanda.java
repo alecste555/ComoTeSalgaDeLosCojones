@@ -11,22 +11,21 @@ import java.util.*;
  * @author Icheclin
  */
 public class Comanda {
-
     private int id;
-    final private HashMap<String, Object[]> primers;
-    final private HashMap<String, Object[]> segons;
-    final private HashMap<String, Object[]> postres;
+    final private HashMap<String,Object[]> primers;
+    final private HashMap<String,Object[]> segons;
+    final private HashMap<String,Object[]> postres;
     private int taula;
     private Date datacomanda;
     private boolean pagada;
-
     public Comanda(int taula, Date datacomanda) {
+        this.id = LogicaComandes.getLlistaComandes().size();
         this.primers = new HashMap<>();
         this.segons = new HashMap<>();
         this.postres = new HashMap<>();
         this.taula = taula;
         this.datacomanda = datacomanda;
-        this.pagada = false;
+        this.pagada=false;
     }
 
     public boolean isPagada() {
@@ -83,11 +82,9 @@ public class Comanda {
     public void deletesegon(String plat, Integer quantitat) {
         segons.remove(plat);
     }
-
-    public void deletepostre(String plat, Integer quantitat) {
-        postres.remove(plat);
+    public void deletepostre(String plat,Integer quantitat){
+    postres.remove(plat);
     }
-
     public void setPrimerHecho(String plato) {
         Object[] o = this.primers.get(plato);
 
@@ -112,35 +109,37 @@ public class Comanda {
         }
         return "";
     }
-
-    public Map<Integer, ArrayList<String[]>> exportDataArray() {
-        ArrayList<String[]> lineascomanda = new ArrayList<>();
+    public Map<Integer,ArrayList<String[]>> exportDataArray() {
+        ArrayList<String[]> lineascomanda= new ArrayList<>();
         String[] varStr;
         for (int i = 0; i < this.primers.size(); i++) {
             varStr = new String[6];
             varStr[0] = Integer.toString(this.id);
             varStr[1] = Integer.toString(this.taula);
-            varStr[2] = this.primers.keySet().toArray()[i].toString();
-            varStr[3] = ((Object[]) this.primers.values().toArray()[i])[0].toString();
-            varStr[4] = this.datacomanda.toString();
+            varStr[2] = gettipoplat(this.primers.keySet().toArray()[i].toString()).toUpperCase();
+            varStr[3] = this.primers.keySet().toArray()[i].toString();
+            varStr[4] = ((Object[]) this.primers.values().toArray()[i])[0].toString();
+            varStr[5] = this.datacomanda.toString();
             lineascomanda.add(varStr);
         }
-        for (int i = 0; i < this.segons.size(); i++) {
+         for(int i = 0; i< this.segons.size();i++){
             varStr = new String[6];
             varStr[0] = Integer.toString(this.id);
             varStr[1] = Integer.toString(this.taula);
-            varStr[2] = this.segons.keySet().toArray()[i].toString();
-            varStr[3] = ((Object[]) this.segons.values().toArray()[i])[0].toString();
-            varStr[4] = this.datacomanda.toString();
+            varStr[2] = gettipoplat(this.segons.keySet().toArray()[i].toString()).toUpperCase();
+            varStr[3] = this.segons.keySet().toArray()[i].toString();
+            varStr[4] = ((Object[]) this.segons.values().toArray()[i])[0].toString();
+            varStr[5] = this.datacomanda.toString();
             lineascomanda.add(varStr);
         }
-        for (int i = 0; i < this.postres.size(); i++) {
+          for(int i = 0; i< this.postres.size();i++){
             varStr = new String[6];
             varStr[0] = Integer.toString(this.id);
             varStr[1] = Integer.toString(this.taula);
-            varStr[2] = this.postres.keySet().toArray()[i].toString();
-            varStr[3] = ((Object[]) this.postres.values().toArray()[i])[0].toString();
-            varStr[4] = this.datacomanda.toString();
+            varStr[2] = gettipoplat(this.postres.keySet().toArray()[i].toString()).toUpperCase();
+            varStr[3] = this.postres.keySet().toArray()[i].toString();
+            varStr[4] = ((Object[]) this.postres.values().toArray()[i])[0].toString();
+            varStr[5] = this.datacomanda.toString();
             lineascomanda.add(varStr);
         }
         Map<Integer, ArrayList<String[]>> mapa = new HashMap<>();
@@ -181,8 +180,8 @@ public class Comanda {
             varStr[6] = (boolean) ((Object[]) this.postres.values().toArray()[i])[1] ? "X" : " ";
             lineascomanda.add(varStr);
         }
-        Map<Integer, ArrayList<String[]>> mapa = new HashMap<>();
-        mapa.put(this.taula, lineascomanda);
+          Map<Integer,ArrayList<String[]>> mapa =new HashMap<>();
+          mapa.put(this.taula, lineascomanda);
         return mapa;
     }
 }

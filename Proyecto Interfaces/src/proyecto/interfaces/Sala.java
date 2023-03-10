@@ -5,10 +5,6 @@
 package proyecto.interfaces;
 
 import java.awt.Color;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Date;
-import proyecto.classes.Comanda;
 import proyecto.classes.LogicaComandes;
 
 /**
@@ -29,11 +25,6 @@ public class Sala extends javax.swing.JDialog {
         super(parent, modal);
         this.parent = parent;
         initComponents();
-        Comanda c1 = new Comanda(1, Date.from(Instant.now()));
-        c1.addprimer("Macarrones", 1, false);
-        c1.addprimer("Espaguetis", 1, false);
-        c1.addpostre("Helado", 1, false);
-        LogicaComandes.afegirComanda(c1);
     }
 
     /**
@@ -342,6 +333,7 @@ public class Sala extends javax.swing.JDialog {
     private void MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MouseExited
         evt.getComponent().setBackground(Color.white);
     }//GEN-LAST:event_MouseExited
+             
 
     private void openTable(Integer table) {
         Taula tauladialeg = new Taula(this.parent, true, table);

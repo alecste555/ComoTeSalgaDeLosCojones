@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
 public class ComandaTableModel extends AbstractTableModel {
 
     private ArrayList<String[]> comandesDelModel;
-    private String[] titolsColumnes = {"Comanda","Taula", "Plat", "Quantitat","Hora comanda"};
+    private String[] titolsColumnes = {"Comanda","Taula","Tipus", "Plat", "Quantitat","Hora comanda"};
 
     @Override
     public int getRowCount() {

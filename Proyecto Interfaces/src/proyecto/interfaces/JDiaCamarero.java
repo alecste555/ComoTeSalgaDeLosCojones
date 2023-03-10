@@ -13,6 +13,7 @@ import org.netbeans.validation.api.builtin.stringvalidation.ValidacioContra;
 import org.netbeans.validation.api.builtin.stringvalidation.ValidacioUsuari;
 import org.netbeans.validation.api.ui.ValidationGroup;
 import org.openide.util.Exceptions;
+import proyecto.classes.VariablesJFrame;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -26,7 +27,6 @@ public class JDiaCamarero extends javax.swing.JDialog {
 
     /**
      * Creates new form JDiaCamarero
-     *
      * @param parent
      * @param modal
      * @param parent2
@@ -48,7 +48,6 @@ public class JDiaCamarero extends javax.swing.JDialog {
         JFraMenuPrincipal = parent2;
     }
     private final JFraMenuPrincipal JFraMenuPrincipal;
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -162,7 +161,8 @@ public class JDiaCamarero extends javax.swing.JDialog {
                 JOptionPane.showConfirmDialog(this, "Has iniciado sesion!", "Felicidades!", JOptionPane.DEFAULT_OPTION);
                 JFraMenuPrincipal.setValidacionCamarero(1);
                 JFraMenuPrincipal.validaciones();
-                this.setVisible(false);
+                VariablesJFrame.camarero=jTeFiUsuario.getText();
+                this.dispose();
             } else {
                 JOptionPane.showConfirmDialog(this, "Usuario o contraseña incorrecto. Ves a estafar a tu madre.", "Farsante!", JOptionPane.DEFAULT_OPTION);
             }
@@ -184,9 +184,10 @@ public class JDiaCamarero extends javax.swing.JDialog {
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-
+        
     }//GEN-LAST:event_jBuRegistrarActionPerformed
-
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -216,7 +217,7 @@ public class JDiaCamarero extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(() -> {
-            JDiaCamarero dialog = new JDiaCamarero(new javax.swing.JFrame(), true, new JFraMenuPrincipal());
+            JDiaCamarero dialog = new JDiaCamarero(new javax.swing.JFrame(),true, new JFraMenuPrincipal());
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {

@@ -1,5 +1,6 @@
 package proyecto.interfaces;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +21,6 @@ public class JDiaConfigGeneral extends javax.swing.JDialog {
 
     /**
      * Creates new form JDiaConfigGeneral
-     *
      * @param parent
      * @param modal
      */

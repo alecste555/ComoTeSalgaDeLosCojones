@@ -11,10 +11,10 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author KAOS
  */
-public class CocinaTableModel extends AbstractTableModel{
-    
-    private ArrayList<String[]> datosTablaCocina;
-    private String[] titolsColumnes = {"Comanda","Taula", "Plat", "Quantitat","Hora comanda","Hecho"};
+public class CocinaTableModel extends AbstractTableModel {
+
+    private ArrayList<Object[]> datosTablaCocina;
+    private String[] titolsColumnes = {"Comanda", "Taula", "Plat", "Quantitat", "Hora comanda", "Hecho","Marca"};
 
     @Override
     public int getRowCount() {
@@ -28,16 +28,40 @@ public class CocinaTableModel extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return datosTablaCocina.get(rowIndex)[columnIndex];
+            return datosTablaCocina.get(rowIndex)[columnIndex];
     }
 
-    public CocinaTableModel(ArrayList<String[]> datosTablaCocina) {
-        this.datosTablaCocina = datosTablaCocina;
+    public CocinaTableModel(ArrayList<Object[]> datosTablaCocina) {
+        this.datosTablaCocina = new ArrayList<Object[]>(datosTablaCocina);
     }
-
 
     @Override
     public String getColumnName(int column) {
         return titolsColumnes[column];
     }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (columnIndex == 6) {
+            datosTablaCocina.get(rowIndex)[columnIndex] = (boolean) aValue;
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if (columnIndex == 6 && datosTablaCocina.get(rowIndex)[5].equals("X")) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex==6)
+            return Boolean.class;
+        else
+        return super.getColumnClass(columnIndex); 
+    }
+    
+    
 }

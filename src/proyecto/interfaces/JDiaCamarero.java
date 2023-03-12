@@ -162,6 +162,7 @@ public class JDiaCamarero extends javax.swing.JDialog {
                 JFraMenuPrincipal.setValidacionCamarero(1);
                 JFraMenuPrincipal.validaciones();
                 VariablesJFrame.camarero=jTeFiUsuario.getText();
+                JFraMenuPrincipal.setCamareroName(jTeFiUsuario.getText());
                 this.dispose();
             } else {
                 JOptionPane.showConfirmDialog(this, "Usuario o contraseña incorrecto. Ves a estafar a tu madre.", "Farsante!", JOptionPane.DEFAULT_OPTION);

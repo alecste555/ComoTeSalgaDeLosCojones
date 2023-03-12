@@ -336,7 +336,7 @@ public class Sala extends javax.swing.JDialog {
              
 
     private void openTable(Integer table) {
-        Taula tauladialeg = new Taula(this.parent, true, table);
+        Taula tauladialeg = new Taula(this.parent, false, table);
         tauladialeg.setVisible(true);
     }
 

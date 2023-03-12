@@ -69,6 +69,10 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
 
     }
 
+    public void setCamareroName(String camarero) {
+        jLabelCamarero1.setText("Camarero: " + camarero);
+    }
+
     public void validaciones() {
         if (VariablesJFrame.validacionLicencia > 0 && VariablesJFrame.validacionMenu > 0 && VariablesJFrame.validacionCamarero > 0) {
             jBuCargarRestaurante.setEnabled(true);
@@ -246,15 +250,15 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
             file = chooser.getSelectedFile();
         }
         if (file != null) {
-            try (BufferedReader bufr = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+            try ( BufferedReader bufr = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
                 String linia = bufr.readLine();
                 partes = linia.split(",");
                 bufr.close();
-            } catch (IOException ex) {
-                Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
             }
 
-            try (BufferedReader bufr2 = new BufferedReader(new FileReader(txtFile))) {
+            try ( BufferedReader bufr2 = new BufferedReader(new FileReader(txtFile))) {
                 String linia;
                 boolean resultado = false;
                 SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
@@ -282,8 +286,13 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
                     jLabelLicencia.setVisible(true);
                     jLabelLicencia1.setVisible(false);
                 }
-            } catch (IOException | ParseException ex) {
-                Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Licencia invalida", "Validacion licencia", JOptionPane.ERROR_MESSAGE);
+                VariablesJFrame.validacionLicencia = 0;
+                validaciones();
+                jLabelLicencia.setVisible(true);
+                jLabelLicencia1.setVisible(false);
             }
         }
 
@@ -291,7 +300,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
 
     private void jMeDatosCamareroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMeDatosCamareroActionPerformed
         // TODO add your handling code here:
-        JDiaCamarero visible = new JDiaCamarero(this, false, this);
+        JDiaCamarero visible = new JDiaCamarero(this, true, this);
         visible.setVisible(true);
     }//GEN-LAST:event_jMeDatosCamareroActionPerformed
 
@@ -311,7 +320,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
             file = chooser.getSelectedFile();
         }
         if (file != null) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
                 Plat p;
                 while ((linea = br.readLine()) != null) {
                     partes = linea.split(",", 6);
@@ -451,12 +460,18 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
 
                 }
                 br.close();
-            } catch (IOException ex) {
-                Logger.getLogger(JFraMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                VariablesJFrame.validacionMenu = 0;
+                validaciones();
+                menu.clear();
+                jLabelMenu.setVisible(true);
+                jLabelMenu1.setVisible(false);
             }
         } else {
             VariablesJFrame.validacionMenu = 0;
             validaciones();
+            menu.clear();
             jLabelMenu.setVisible(true);
             jLabelMenu1.setVisible(false);
         }
@@ -464,7 +479,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
 
     private void jMeConfigGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMeConfigGeneralActionPerformed
         // TODO add your handling code here:
-        JDiaConfigGeneral visible = new JDiaConfigGeneral(this, false);
+        JDiaConfigGeneral visible = new JDiaConfigGeneral(this, true);
         visible.setVisible(true);
     }//GEN-LAST:event_jMeConfigGeneralActionPerformed
 

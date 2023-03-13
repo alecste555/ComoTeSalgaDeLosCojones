@@ -120,6 +120,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jBuCargarRestaurante.setText("Cargar restaurante");
+        jBuCargarRestaurante.setEnabled(false);
         jBuCargarRestaurante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBuCargarRestauranteActionPerformed(evt);

@@ -109,7 +109,7 @@ public class JDiaCocina extends javax.swing.JDialog {
                                 }
                             }
                             Date HoraActual = Date.from(Instant.now());
-                            Date PlatoSalida = new Date(comanda.getDatacomanda().getTime() + (2 * 60 * 20));
+                            Date PlatoSalida = new Date(comanda.getDatacomanda().getTime() + (15 * 60 * 1000));
                             if (PlatoSalida.before(HoraActual)) {
                                 comanda.setPrimerHecho(s[2]);
                             }
@@ -129,7 +129,7 @@ public class JDiaCocina extends javax.swing.JDialog {
                                 }
                             }
                             Date HoraActual = Date.from(Instant.now());
-                            Date PlatoSalida = new Date(comanda.getDatacomanda().getTime() + (1 * 60 * 1000));
+                            Date PlatoSalida = new Date(comanda.getDatacomanda().getTime() + (30 * 60 * 1000));
                             if (PlatoSalida.before(HoraActual)) {
                                 comanda.setSegonHecho(s[2]);
                             }

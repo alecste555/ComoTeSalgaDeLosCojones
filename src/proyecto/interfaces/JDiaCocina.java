@@ -6,7 +6,6 @@ package proyecto.interfaces;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,7 +27,6 @@ public class JDiaCocina extends javax.swing.JDialog {
     String añadir = "";
     ArrayList<String> platos = new ArrayList<>();
     ArrayList<String> menu = new ArrayList<>();
-    String[] menuArray;
     ArrayList<Object[]> primers = new ArrayList<>();
     ArrayList<Object[]> segons = new ArrayList<>();
 
@@ -137,69 +135,6 @@ public class JDiaCocina extends javax.swing.JDialog {
                         }
                     }
                     i++;
-                    /*
-                    for (int i = 0; i < menu.size(); i++) {
-                        String dentroPlato = menu.get(i);
-                        String[] splitPlatos = dentroPlato.split(",");
-                        if (splitPlatos[2].equals(s[2]) && splitPlatos[1].equals("primer")) {
-                            primers.clear();
-                            primers.add(s);
-                            for (Comanda obj_it : LogicaComandes.getLlistaComandes()) {
-                                if (obj_it.getId() == Integer.parseInt(s[0])) {
-                                    comandaObjeto = obj_it;
-                                }
-                            }
-                            
-                        }
-                        if (splitPlatos[2].equals(s[2]) && splitPlatos[1].equals("segon")) {
-                            segons.clear();
-                            segons.add(s);
-                            for (Comanda obj_it : LogicaComandes.getLlistaComandes()) {
-                                if (obj_it.getId() == Integer.parseInt(s[0])) {
-                                    comandaObjeto = obj_it;
-                                }
-                            }
-                            Date HoraActual = Date.from(Instant.now());
-                            Date PlatoSalida = new Date(comandaObjeto.getDatacomanda().getTime() + (1 * 60 * 1000));
-                            if (PlatoSalida.before(HoraActual)) {
-                                comandaObjeto.setSegonHecho(s[2]);
-                            }
-                        }
-
-                    }*/
- /*
-                    posPostre++;
-                    posSegon++;
-                    if (posPostre % 3 != 0) {
-                        if (posSegon % 2 == 0) {
-
-                            segons.add(s);
-                            for (Comanda obj_it : LogicaComandes.getLlistaComandes()) {
-                                if (obj_it.getId() == Integer.parseInt(s[0])) {
-                                    comandaObjeto = obj_it;
-                                }
-                            }
-                            Date HoraActual = Date.from(Instant.now());
-                            Date PlatoSalida = new Date(comandaObjeto.getDatacomanda().getTime() + (1 * 60 * 1000));
-                            if (PlatoSalida.before(HoraActual)) {
-                                comandaObjeto.setSegonHecho(s[2]);
-                            }
-
-                        } else {
-                            primers.add(s);
-                            for (Comanda obj_it : LogicaComandes.getLlistaComandes()) {
-                                if (obj_it.getId() == Integer.parseInt(s[0])) {
-                                    comandaObjeto = obj_it;
-                                }
-                            }
-                            Date HoraActual = Date.from(Instant.now());
-                            Date PlatoSalida = new Date(comandaObjeto.getDatacomanda().getTime() + (2 * 60 * 1000));
-                            if (PlatoSalida.before(HoraActual)) {
-                                comandaObjeto.setPrimerHecho(s[2]);
-                            }
-                        }
-                    }
-                     */
                 }
             }
         }

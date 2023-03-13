@@ -9,7 +9,9 @@ Sino interpreta que aun no has especificado la cantidad.
 
 Una vez llegas ya a cuando se te abren los 2 dialogs (cocina y taula), si intentas cerrar el programa veras que
 se queda en marcha en segundo plano, ya que tecnicamente el padre esta invisible. Queriamos que se cerrase todo
-al cerrar uno de los hijos, pero no pudimos.
+al cerrar los 2 hijos, pero no pudimos.
+
+Para poder marcar una comanda en cocina, debe de estar hecha.
 
 
 

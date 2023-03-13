@@ -19,33 +19,38 @@ import proyecto.classes.VariablesJFrame;
  * @author Icheclin
  */
 public final class Taula extends javax.swing.JDialog {
-private final int mesa;
+
+    private final int mesa;
     private final java.awt.Frame parent;
+
     /**
      * Creates new form Taula
+     *
      * @param parent
      * @param modal
      * @param mesa
      */
-    public Taula(java.awt.Frame parent, boolean modal,int mesa) {
+    public Taula(java.awt.Frame parent, boolean modal, int mesa) {
         super(parent, modal);
         this.parent = parent;
-        this.mesa=mesa;
-        this.setTitle("Taula "+mesa);
+        this.mesa = mesa;
+        this.setTitle("Taula " + mesa);
         initComponents();
         updateTable();
     }
-public void updateTable() {
-        ArrayList<String[]> comandeslineas =new ArrayList<>();
+
+    public void updateTable() {
+        ArrayList<String[]> comandeslineas = new ArrayList<>();
         for (Comanda obj_it : LogicaComandes.getLlistaComandes()) {
-            if (obj_it.exportDataArray().containsKey(mesa)&&!obj_it.isPagada()){
-            for(int i = 0;i<obj_it.exportDataArray().get(mesa).size();i++){
-            comandeslineas.add(obj_it.exportDataArray().get(mesa).get(i));
-            }
+            if (obj_it.exportDataArray().containsKey(mesa) && !obj_it.isPagada()) {
+                for (int i = 0; i < obj_it.exportDataArray().get(mesa).size(); i++) {
+                    comandeslineas.add(obj_it.exportDataArray().get(mesa).get(i));
+                }
             }
         }
         jTable2.setModel(new ComandaTableModel(comandeslineas));
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -139,9 +144,10 @@ public void updateTable() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void novaComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novaComandaActionPerformed
-        if(VariablesJFrame.horaCierreRestaurant.before(Date.from(Instant.now()))){
-        Carta cartadialeg = new Carta(this.parent, true, mesa,this);
-        cartadialeg.setVisible(true);}
+        if (VariablesJFrame.horaCierreRestaurant.after(Date.from(Instant.now()))) {
+            Carta cartadialeg = new Carta(this.parent, true, mesa, this);
+            cartadialeg.setVisible(true);
+        }
     }//GEN-LAST:event_novaComandaActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
@@ -149,8 +155,8 @@ public void updateTable() {
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-Facturar facturadialeg = new Facturar(parent,true,mesa,this);
-        facturadialeg.setVisible(true);        
+        Facturar facturadialeg = new Facturar(parent, true, mesa, this);
+        facturadialeg.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
@@ -181,7 +187,7 @@ Facturar facturadialeg = new Facturar(parent,true,mesa,this);
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(() -> {
-            Taula dialog = new Taula(new javax.swing.JFrame(), true,0);
+            Taula dialog = new Taula(new javax.swing.JFrame(), true, 0);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {

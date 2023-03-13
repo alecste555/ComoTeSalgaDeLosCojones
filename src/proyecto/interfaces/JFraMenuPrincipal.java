@@ -79,7 +79,7 @@ public class JFraMenuPrincipal extends javax.swing.JFrame {
             jLabelInsertar.setVisible(false);
 
         } else {
-            //jBuCargarRestaurante.setEnabled(false);
+            jBuCargarRestaurante.setEnabled(false);
             jLabelInsertar1.setVisible(false);
             jLabelInsertar.setVisible(true);
 
